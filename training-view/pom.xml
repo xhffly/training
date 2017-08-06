@@ -1,0 +1,76 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.strongit.ah</groupId>
+    <artifactId>training-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>training-view</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>war</packaging>
+  <name>training-view</name>
+  
+  <properties>
+		<!-- 本地调试tomcat7 上下文路径 -->
+		<project.contextPath>${project.artifactId}</project.contextPath>
+		<!-- 本地调试tomcat7 端口 -->
+		<project.port>8080</project.port>
+		<project.warSourceDirectory>${basedir}webapp</project.warSourceDirectory>
+	</properties>
+  <dependencies>
+  	<dependency>
+  		<groupId>com.strongit.ah</groupId>
+  		<artifactId>training-service</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	<dependency>
+	  <groupId>org.apache.struts</groupId>
+	  <artifactId>struts2-codebehind-plugin</artifactId>
+	  <version>2.3.20</version>
+	</dependency>
+  </dependencies>
+  
+  <build>
+	<finalName>training-view</finalName>
+	<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.2.1</version>
+
+				<configuration>
+					<executable>java</executable>
+					<arguments>
+						<!--<argument>-Djava.ext.dirs=D:\jinqi\hecv\trunk\target\hecv\WEB-INF\lib</argument> 
+							&lt;!&ndash; 这是一个系统属性参数 &ndash;&gt; -->
+						<argument>-XX:MaxPermSize=256m</argument>
+						<!-- 这是一个JVM参数 -->
+						<!--<argument> -Djava.ext.dirs=D:\jinqi\hecv\trunk\target\hecv\WEB-INF\lib</argument> -->
+						<argument>-classpath</argument>
+						<!-- 这是classpath属性，其值就是下面的<classpath/> -->
+						<classpath />
+						<!-- 这是exec插件最有价值的地方，关于工程的classpath并不需要手动指定，它将由exec自动计算得出 -->
+						<argument>org.zcframework.generator.Generator</argument>
+						<!-- 程序入口，主类名称 -->
+					</arguments>
+				</configuration>
+
+			</plugin>
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<contextReloadable>false</contextReloadable>
+					<warSourceDirectory>${basedir}/webapp</warSourceDirectory>
+					<uriEncoding>UTF-8</uriEncoding>
+					<path>/${project.artifactId}</path>
+					<url>${deploy.url}</url>
+					<port>${project.port}</port>
+					<username>admin</username>
+					<password>1</password>
+				</configuration>
+			</plugin>
+		</plugins>
+  </build>
+</project>
